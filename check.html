@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #ffe6f2;
+      background-image: linear-gradient(to bottom, #ffe6f2, #ffcceb);
+      min-height: 100vh;
+    }
+    .text {
+      background-color: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .text::before {
+      content: "";
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      right: -10px;
+      bottom: -10px;
+      border: 2px dashed #ff69b4;
+      border-radius: 20px;
+      z-index: -1;
+    }
+    .title {
+      font-size: 28px;
+      font-weight: bold;
+      color: #ff1493;
+      text-align: center;
+      margin-bottom: 25px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+    p {
+      line-height: 1.8;
+      color: #333;
+      font-size: 18px;
+    }
+    .buttons-container {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 25px;
+    }
+    button {
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: all 0.3s;
+      box-shadow: 0 4px 8px rgba(255, 105, 180, 0.3);
+    }
+    button:hover {
+      background-color: #ff1493;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(255, 105, 180, 0.4);
+    }
+    button:active {
+      transform: translateY(1px);
+    }
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: #f0f;
+      animation: fall 5s linear infinite;
+    }
+    @keyframes fall {
+      0% {transform: translateY(-100px) rotate(0deg); opacity: 1;}
+      100% {transform: translateY(600px) rotate(360deg); opacity: 0;}
+    }
+  </style>
+</head>
+<body>
+  <div class="text">
+    <p class="title">
+      Happy Birthday!<br>Richelle, a gem as rare
+    </p>
+    <p>
+      "Happy Birthday to my fabulous bestie! 🎉🎂 You're not just a friend, you're family. Wishing you a day filled with laughter, love, and all the wonderful things life has to offer. Cheers to your another year of unforgettable memories and adventures! 🥳🎈"
+    </p>
+    <p>Stay healthy and safe next year also, dearest bestie!!</p>
+    <div class="buttons-container">
+      <button onclick="handleRedirect('couple')">couple</button>
+      <button onclick="handleRedirect('event')">event</button>
+      <button onclick="handleRedirect('info')">info</button>
+    </div>
+  </div>
+
+  <script>
+    // Create confetti effect
+    function createConfetti() {
+      const colors = ['#ff69b4', '#ff1493', '#ffb6c1', '#ffc0cb', '#ffa500', '#ffd700'];
+      
+      for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.width = Math.random() * 10 + 5 + 'px';
+        confetti.style.height = confetti.style.width;
+        confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+        confetti.style.animationDelay = Math.random() * 5 + 's';
+        document.body.appendChild(confetti);
+      }
+    }
+
+    // Function to handle redirect with parameters
+    function handleRedirect(buttonType) {
+      // Store which button was clicked in localStorage
+      localStorage.setItem('buttonClicked', buttonType);
+      localStorage.setItem('playSong', 'true');
+      
+      // Create confetti effect before redirecting
+      createConfetti();
+      
+      // Redirect to page2.html
+      window.location.href = 'page2.html';
+    }
+
+    // Create some initial confetti
+    window.onload = function() {
+      createConfetti();
+    };
+  </script>
+</body>
+</html>

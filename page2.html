@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Page 2</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #ffe6f2;
+      background-image: linear-gradient(to bottom, #ffe6f2, #ffcceb);
+      min-height: 100vh;
+      text-align: center;
+    }
+    h1 {
+      color: #ff1493;
+      margin-top: 50px;
+    }
+    .content {
+      background-color: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      margin-top: 30px;
+    }
+    .play-button {
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 15px;
+      transition: all 0.3s;
+      box-shadow: 0 4px 8px rgba(255, 105, 180, 0.3);
+    }
+    .play-button:hover {
+      background-color: #ff1493;
+      transform: translateY(-2px);
+    }
+    .message {
+      color: #ff1493;
+      margin-top: 15px;
+      font-style: italic;
+    }
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: #f0f;
+      animation: fall 5s linear infinite;
+    }
+    @keyframes fall {
+      0% {transform: translateY(-100px) rotate(0deg); opacity: 1;}
+      100% {transform: translateY(600px) rotate(360deg); opacity: 0;}
+    }
+  </style>
+</head>
+<body>
+  <!-- Audio element -->
+  <audio id="birthdaySong" controls style="display: none;">
+    <source src="/photo/ganpati song.mp3" type="audio/mpeg">
+    <source src="photo/ganpati song.mp3" type="audio/mpeg">
+    <source src="ganpati song.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <div class="content">
+    <h1>Welcome to Page 2!</h1>
+    <button class="play-button" onclick="playMusic()">Play Birthday Music</button>
+    <p class="message" id="songMessage"></p>
+    <div id="dynamicContent">
+      <!-- Content will be loaded based on which button was clicked -->
+    </div>
+  </div>
+
+  <script>
+    // Function to create confetti
+    function createConfetti() {
+      const colors = ['#ff69b4', '#ff1493', '#ffb6c1', '#ffc0cb', '#ffa500', '#ffd700'];
+      
+      for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.width = Math.random() * 10 + 5 + 'px';
+        confetti.style.height = confetti.style.width;
+        confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+        confetti.style.animationDelay = Math.random() * 5 + 's';
+        document.body.appendChild(confetti);
+      }
+    }
+    
+    // Function to play music with feedback
+    function playMusic() {
+      const audio = document.getElementById('birthdaySong');
+      const messageEl = document.getElementById('songMessage');
+      
+      // Try to play the audio
+      audio.play()
+        .then(() => {
+          messageEl.textContent = "🎵 Happy Birthday music is playing! 🎵";
+          createConfetti();
+        })
+        // .catch(error => {
+        //   console.error("Error playing audio:", error);
+        //   messageEl.textContent = "⚠️ Couldn't play the song automatically. Please check your audio file path.";
+        // });
+    }
+    
+    window.onload = function() {
+      // Create initial confetti
+      createConfetti();
+      
+      // Try to play audio after a small delay (to let the page fully load)
+      setTimeout(() => {
+        // Only try to auto-play if we came from the redirect
+        if (localStorage.getItem('playSong') === 'true') {
+          playMusic();
+          localStorage.removeItem('playSong');
+        }
+      }, 800);
+      
+      // Get which button was clicked
+      const buttonClicked = localStorage.getItem('buttonClicked');
+      const contentDiv = document.getElementById('dynamicContent');
+      
+      // Display different content based on button clicked
+      if (buttonClicked === 'couple') {
+        contentDiv.innerHTML = '<h2>Couple Section</h2><p>Here are some wonderful memories of you and your friends...</p>';
+      } else if (buttonClicked === 'event') {
+        contentDiv.innerHTML = '<h2>Event Details</h2><p>Here are the details for the birthday celebration event...</p>';
+      } else if (buttonClicked === 'info') {
+        contentDiv.innerHTML = '<h2>Information</h2><p>Here is some additional information you might find useful...</p>';
+      } else {
+        contentDiv.innerHTML = '<p>Welcome to the next page!</p>';
+      }
+      
+      // Clear the stored button type
+      localStorage.removeItem('buttonClicked');
+    };
+    
+    // Another approach: try to enable audio on first user interaction
+    document.addEventListener('click', function firstClick() {
+      const audio = document.getElementById('birthdaySong');
+      
+      // Attempt to play silently just to enable audio
+      audio.volume = 0.1;
+      audio.play().then(() => {
+        audio.pause();
+        audio.currentTime = 0;
+        audio.volume = 1.0;
+      }).catch(() => {});
+      
+      // Remove this listener after the first click
+      document.removeEventListener('click', firstClick);
+    });
+  </script>
+</body>
+</html>
